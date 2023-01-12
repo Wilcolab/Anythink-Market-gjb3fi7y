@@ -36,7 +36,10 @@ router.param("comment", function(req, res, next, id) {
     .catch(next);
 });
 
+Item.createIndexes([{key: {title: "text"}}]);
+
 router.get("/", auth.optional, function(req, res, next) {
+
   var query = {};
   var limit = 100;
   var offset = 0;
