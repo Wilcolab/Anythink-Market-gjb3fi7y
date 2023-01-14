@@ -36,8 +36,6 @@ router.param("comment", function(req, res, next, id) {
     .catch(next);
 });
 
-Item.createIndexes([{key: {title: "text"}}]);
-
 router.get("/", auth.optional, function(req, res, next) {
 
   var query = {};
@@ -57,7 +55,8 @@ router.get("/", auth.optional, function(req, res, next) {
   }
 
   if(typeof req.query.title !== "undefined"){
-    query.$text = { $search: req.query.title };
+    const reg = new RegExp(req.query.title, 'i');
+    query.title = {$regex: reg};
   }
 
   Promise.all([
