@@ -37,6 +37,7 @@ router.param("comment", function(req, res, next, id) {
 });
 
 router.get("/", auth.optional, function(req, res, next) {
+
   var query = {};
   var limit = 100;
   var offset = 0;
@@ -51,6 +52,11 @@ router.get("/", auth.optional, function(req, res, next) {
 
   if (typeof req.query.tag !== "undefined") {
     query.tagList = { $in: [req.query.tag] };
+  }
+
+  if(typeof req.query.title !== "undefined"){
+    const reg = new RegExp(req.query.title, 'i');
+    query.title = {$regex: reg};
   }
 
   Promise.all([
