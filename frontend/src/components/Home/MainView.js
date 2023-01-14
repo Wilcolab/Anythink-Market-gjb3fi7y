@@ -70,6 +70,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const MainView = (props) => {
+  if(props.noResult){
+    return <div className="py-4" id="empty">"No result match for search"</div>
+  }
   return (
     <div>
       <div className="feed-toggle">
