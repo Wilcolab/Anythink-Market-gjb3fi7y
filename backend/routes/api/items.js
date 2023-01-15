@@ -153,10 +153,11 @@ router.post("/", auth.required, function(req, res, next) {
       var item = new Item(req.body.item);
 
       if(item.image.length===0){
+        console.log(process.env.OPENAI_API_KEY)
         const imageGenerated = await openai.createImage({
-          prompt: req.body.item.title,
+          prompt: item.title,
           n: 1,
-          size: "256*256"
+          size: "256x256",
         });
         item.image = imageGenerated.data.data[0].url;
       }
