@@ -1,7 +1,11 @@
 //TODO: seeds script should come here, so we'll be able to put some data in our local env
 
-import mongoose from "mongoose";
-var User = mongoose.model("User");
+let mongoose =require("mongoose");
+
+let UserModel = require("../models/User");
+let ItemModel = require("../models/Item");
+let CommentModel = require("../models/Comment");
+let User = mongoose.model("User");
 let Item = mongoose.model("Item");
 let Comment = mongoose.model("Comment");
 
@@ -10,7 +14,7 @@ const { faker } = require('@faker-js/faker');
 mongoose.connect(process.env.MONGODB_URI);
 
 async function insertFakeRecords(){
-    const name = faker.random.alphanumeric(7);
+    const name = faker.random.alphaNumeric(7);
     const email = faker.internet.email();
 
     let newUser = new User({
