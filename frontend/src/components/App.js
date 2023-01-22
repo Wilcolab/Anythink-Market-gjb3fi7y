@@ -66,6 +66,7 @@ class App extends React.Component {
             <Route path="/settings" component={Settings} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
+            <Route path="*" component={<div>Page not found</div>} />
           </Switch>
         </div>
       );
