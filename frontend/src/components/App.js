@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { APP_LOAD, REDIRECT } from "../constants/actionTypes";
 import { Route, Switch } from "react-router-dom";
 import Item from "./Item";
+import PageNotFound from "./PageNotFound";
 import Editor from "./Editor";
 import Home from "./Home";
 import Login from "./Login";
@@ -66,6 +67,7 @@ class App extends React.Component {
             <Route path="/settings" component={Settings} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         </div>
       );
