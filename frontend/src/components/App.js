@@ -8,6 +8,7 @@ import Item from "./Item";
 import Editor from "./Editor";
 import Home from "./Home";
 import Login from "./Login";
+import PageNotFound from "./PageNotFound";
 import Profile from "./Profile";
 import ProfileFavorites from "./ProfileFavorites";
 import Register from "./Register";
@@ -66,6 +67,7 @@ class App extends React.Component {
             <Route path="/settings" component={Settings} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         </div>
       );
