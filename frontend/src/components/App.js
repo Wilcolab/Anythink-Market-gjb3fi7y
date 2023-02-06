@@ -14,7 +14,6 @@ import Register from "./Register";
 import Settings from "./Settings";
 import { store } from "../store";
 import { push } from "react-router-redux";
-import PrivateRoute from "./PrivateRoute";
 
 const mapStateToProps = (state) => {
   return {
@@ -62,9 +61,9 @@ class App extends React.Component {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/editor/:slug" component={Editor} />
-            <PrivateRoute currentUser={this.props.currentUser} path="/editor" component={Editor} />
+            <Route path="/editor" component={Editor} />
             <Route path="/item/:id" component={Item} />
-            <PrivateRoute currentUser={this.props.currentUser} path="/settings" component={Settings} />
+            <Route path="/settings" component={Settings} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
           </Switch>
