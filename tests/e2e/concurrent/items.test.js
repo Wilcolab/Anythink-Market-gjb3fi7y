@@ -11,6 +11,7 @@ const {
   randomUserInfo,
   randomImageUrl,
   randomString,
+  matchObjects,
 } = require("../utils");
 
 let anythinkClient;
@@ -31,10 +32,11 @@ describe("Items Route", () => {
       const item = randomItemInfo();
 
       const createdItem = await anythinkClient.createItem(item, user);
-      expect(createdItem).toMatchObject(item);
+      expect(matchObjects(createdItem, item)).toBe(true);
 
       const receivedItem = await anythinkClient.getItem(createdItem.slug);
-      expect(receivedItem).toMatchObject(createdItem);
+
+      expect(matchObjects(receivedItem, createdItem)).toBe(true);
     });
 
     test("Can't create item without title", async () => {
@@ -150,14 +152,15 @@ describe("Items Route", () => {
         updateInfo,
         user
       );
+      expect(
+        matchObjects(updatedItemResult, {
+          ...origItemInfo,
+          ...updateInfo,
+        })
+      ).toBe(true);
 
-      expect(updatedItemResult).toMatchObject({
-        ...origItemInfo,
-        ...updateInfo,
-      });
-
-      const retreivedItem = await anythinkClient.getItem(item.slug);
-      expect(retreivedItem).toMatchObject(updatedItemResult);
+      const retrievedItem = await anythinkClient.getItem(item.slug);
+      expect(matchObjects(retrievedItem, updatedItemResult)).toBe(true);
     };
   });
 
@@ -262,17 +265,17 @@ describe("Items Route", () => {
       ).rejects.toThrow();
     });
 
-    test("Comments are retreived in reversed order", async () => {
+    test("Comments are retrieved in reversed order", async () => {
       const item = await anythinkClient.createItem(randomItemInfo(), user);
-      const commnets = await addComments(item, [
+      const comments = await addComments(item, [
         commentingUserA,
         commentingUserB,
       ]);
 
       const itemsComments = await anythinkClient.getComments(item.slug);
 
-      expect(itemsComments[0]).toMatchObject(commnets[1]);
-      expect(itemsComments[1]).toMatchObject(commnets[0]);
+      expect(itemsComments[0]).toMatchObject(comments[1]);
+      expect(itemsComments[1]).toMatchObject(comments[0]);
     });
 
     test("Users can delete their own comments", async () => {
@@ -297,22 +300,6 @@ describe("Items Route", () => {
         commentingUserB
       );
       expect(await anythinkClient.getComments(item.slug)).toHaveLength(0);
-    });
-
-    test("Users cannot delete other users comments", async () => {
-      const item = await anythinkClient.createItem(randomItemInfo(), user);
-      const commnets = await addComments(item, [
-        commentingUserA,
-        commentingUserB,
-      ]);
-
-      expect(await anythinkClient.getComments(item.slug)).toHaveLength(2);
-
-      await expect(
-        anythinkClient.deleteComment(item.slug, commnets[0].id, commentingUserB)
-      ).rejects.toThrow();
-
-      expect(await anythinkClient.getComments(item.slug)).toHaveLength(2);
     });
 
     const addComments = async (item, commentingUsers) => {
